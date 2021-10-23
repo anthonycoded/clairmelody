@@ -16,7 +16,7 @@ function App() {
         <Stack.Navigator
           initialRouteName=""
           screenOptions={{
-            title: "Threadly",
+            title: "ClairMedlody",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: theme.colors.primary,
