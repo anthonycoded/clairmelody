@@ -1,0 +1,73 @@
+import { DefaultTheme, DarkTheme } from "react-native-paper";
+
+export const lightTheme = {
+  ...DefaultTheme,
+  dark: false,
+  roundness: 5,
+  colors: {
+    primary: "#549FFC",
+    accent: "#B6CDFE",
+    hint: "#D0D0D0",
+    background: "white",
+    surface: "#CFDEFF",
+    active: "#5FDBA7",
+    error: "#B00020",
+    text: "black",
+    textInverted: "white",
+    onBackground: "#000000",
+    onSurface: "#000000",
+    disabled: "#777777",
+    placeholder: "#777777",
+    backdrop: "rgba(0,0,0,0.5)",
+    notification: "#EC407A",
+  },
+};
+
+export const darkTheme = {
+  ...DarkTheme,
+  dark: true,
+  roundness: 5,
+  colors: {
+    primary: "#549FFC",
+    accent: "#314D76",
+    hint: "#292929",
+    background: "black",
+    surface: "#24344E",
+    active: "#5FDBA7",
+    error: "#CF6679",
+    text: "white",
+    textInverted: "black",
+    onBackground: "#FFFFFF",
+    onSurface: "#FFFFFF",
+    disabled: "#777777",
+    placeholder: "#777777",
+    backdrop: "rgba(0,0,0,0.5)",
+    notification: "#F8BBD0",
+  },
+};
+
+export const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#00b8d4",
+    primaryLight: "rgba(14, 164, 75, 0.4)",
+    accent: "#f1c40f",
+    fade: "#C7C7CC",
+    fade2: "rgba(0.24, 0.24, 0.26, 0.6)",
+    fade3: "rgba(0.24, 0.24, 0.26, 0.09)",
+    fade4: "#D1D1D6",
+    fade5: "#3C3C4399",
+    fade6: "#5F5F60",
+    fadedBackground: "#F4F4F4",
+    disabled: "#D3D3D3",
+    inActive: "#999999",
+    white: "#FFFFFF",
+    whiteText: "#FFFFFF",
+    black: "#000",
+    danger: "#F50202",
+    greyText: "#5F5F60",
+    modalBackGround: "rgba(95, 95, 96, 0.65)",
+    greyBackground: "#f4f4f4",
+  },
+};
