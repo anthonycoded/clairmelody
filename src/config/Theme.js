@@ -50,7 +50,7 @@ export const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#00b8d4",
+    primary: "#f44336",
     primaryLight: "rgba(14, 164, 75, 0.4)",
     accent: "#f1c40f",
     fade: "#C7C7CC",
