@@ -9,7 +9,8 @@ import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 import HomeNavigator from "./MainNavigator";
-import ProfileSettingsNavigator from "./ProfileSettingsNavigator";
+import SongScreen from "../screens/SongScreen";
+import BeatScreen from "../screens/BeatsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,8 +58,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Songs"
-        component=""
+        name="SongsScreen"
+        component={SongScreen}
         options={{
           headerShown: false,
           tabBarLabel: ({ focused, color }) => (
@@ -73,13 +74,17 @@ const BottomTabNavigator = () => {
           ),
           tabBarColor: theme.colors.primary,
           tabBarIcon: ({ focused }) => (
-            <FontAwesome5 name="headphones" size={24} color="black" />
+            <FontAwesome5
+              name="headphones"
+              size={24}
+              color={focused ? theme.colors.primary : theme.colors.inActive}
+            />
           ),
         }}
       />
       <Tab.Screen
         name="Beats"
-        component={ProfileSettingsNavigator}
+        component={BeatScreen}
         options={{
           headerShown: false,
           tabBarLabel: ({ focused, color }) => (
@@ -94,7 +99,11 @@ const BottomTabNavigator = () => {
           ),
           tabBarColor: theme.colors.primary,
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons name="piano" size={24} color="black" />
+            <MaterialCommunityIcons
+              name="piano"
+              size={24}
+              color={focused ? theme.colors.primary : theme.colors.inActive}
+            />
           ),
         }}
       />
