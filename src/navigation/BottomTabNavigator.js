@@ -3,14 +3,13 @@ import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 import HomeNavigator from "./MainNavigator";
 import ProfileSettingsNavigator from "./ProfileSettingsNavigator";
-import ExploreScreen from "../screens/ExploreScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,8 +57,8 @@ const BottomTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Explore"
-        component={ExploreScreen}
+        name="Songs"
+        component=""
         options={{
           headerShown: false,
           tabBarLabel: ({ focused, color }) => (
@@ -69,22 +68,17 @@ const BottomTabNavigator = () => {
                 fontSize: 14,
               }}
             >
-              Explore
+              Songs
             </Text>
           ),
           tabBarColor: theme.colors.primary,
           tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="home-outline"
-              size={focused ? 24 : 22}
-              color={focused ? theme.colors.primary : theme.colors.inActive}
-              backgroundColor={focused ? theme.colors.primary : "none"}
-            />
+            <FontAwesome5 name="headphones" size={24} color="black" />
           ),
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="Beats"
         component={ProfileSettingsNavigator}
         options={{
           headerShown: false,
@@ -95,17 +89,12 @@ const BottomTabNavigator = () => {
                 fontSize: 14,
               }}
             >
-              Profile
+              Beats
             </Text>
           ),
           tabBarColor: theme.colors.primary,
           tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="home-outline"
-              size={focused ? 24 : 22}
-              color={focused ? theme.colors.primary : theme.colors.inActive}
-              backgroundColor={focused ? theme.colors.primary : "none"}
-            />
+            <MaterialCommunityIcons name="piano" size={24} color="black" />
           ),
         }}
       />
