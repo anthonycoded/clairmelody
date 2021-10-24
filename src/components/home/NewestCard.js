@@ -10,19 +10,12 @@ import {
 import { config } from "../../config/Config";
 import { theme } from "../../config/Theme";
 
-const NewestCard = ({ item }) => {
-  const { title } = item;
+const NewestCard = ({ item, selectTrack }) => {
+  const { title, id } = item;
   console.log(item);
   return (
     <View style={styles.slide}>
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() => {
-          navigation.navigate("Account", {
-            id: id,
-          });
-        }}
-      >
+      <TouchableOpacity style={styles.card} onPress={() => selectTrack(id)}>
         <ImageBackground
           source={{ uri: item.image }}
           resizeMode="cover"
