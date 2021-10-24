@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { config } from "../config/Config";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Audio } from "expo-av";
-
-const url =
-  "https://storage.googleapis.com/beatdealer-images/0eb8d9cf-1f70-46da-8ae8-b3e5331ca474";
-
-const audio =
-  "https://storage.googleapis.com/beatdealer-beats/(FREE)%20xxxtentacion%20type%20beat%20mess.mp3.mpga";
+import { useSelector, useDispatch } from "react-redux";
 
 const Player = () => {
   const [loading, setLoading] = useState(false);
@@ -17,8 +12,36 @@ const Player = () => {
   const [playing, setPlaying] = useState(false);
   const sound = React.useRef(new Audio.Sound());
 
+  //Get current track id
+  const player = useSelector((state) => state.player);
+  let id = player.currentTrack;
+  //Get all songs
+  const songs = useSelector((state) => state.songs);
+  //Filter songs to get current track by id
+  let currentTrack = songs.filter((item) => item.id === id);
+  //Set audio to currentTrack
+  let audio = currentTrack[0].audioUrl;
+
+  console.log("CurrentTrack: ", currentTrack);
+
   React.useEffect(() => {
     LoadAudio();
+  }, []);
+
+  useEffect(() => {
+    async function reload() {
+      const result = await sound.current.getStatusAsync();
+      if (result.isLoaded) {
+        sound.current.pauseAsync();
+        console.log("pause");
+        sound.current.unloadAsync();
+        console.log("unload");
+      }
+
+      setPlaying(false);
+      LoadAudio();
+    }
+    reload();
   }, [audio]);
 
   const PlayAudio = async () => {
@@ -71,8 +94,10 @@ const Player = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: url }} style={styles.image} />
-      <Text style={styles.title}>Media PLayer </Text>
+      <View style={{ width: 50 }}>
+        <Image source={{ uri: currentTrack[0].image }} style={styles.image} />
+      </View>
+      <Text style={styles.title}>{currentTrack[0].title}</Text>
       {playing ? (
         <TouchableOpacity onPress={PauseAudio} style={{ width: 50 }}>
           <FontAwesome5 name="pause" size={24} color="black" />
@@ -99,11 +124,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: config.wp("2%"),
+    paddingRight: config.wp("2%"),
   },
   image: {
-    height: 60,
-    width: 60,
+    height: "100%",
+    width: 80,
   },
   title: {
     fontSize: 20,
