@@ -1,12 +1,15 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { MainReducer } from "./reducers/MainReducer";
 import { SongsReducer } from "./reducers/SongsReducer";
+import { PlayerReducer } from "./reducers/PlayerReducer";
 
 const rootReducer = combineReducers({
   main: MainReducer,
   songs: SongsReducer,
+  player: PlayerReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default store;
