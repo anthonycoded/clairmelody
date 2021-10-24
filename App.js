@@ -16,7 +16,7 @@ function App() {
         <Stack.Navigator
           initialRouteName=""
           screenOptions={{
-            title: "ClairMedlody",
+            title: "Jay's World",
             headerTitleAlign: "center",
             headerStyle: {
               backgroundColor: theme.colors.primary,
