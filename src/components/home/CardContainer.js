@@ -1,13 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
+import { SelectTrack } from "../../store/actions/PlayerActions";
 import Carousel from "../Carousel";
 import { config } from "../../config/Config";
 import { theme } from "../../config/Theme";
 
 const CardContainer = ({ navigation }) => {
   const data = useSelector((state) => state.songs);
+  const dispatch = useDispatch();
+
+  const selectTrack = (id) => {
+    dispatch(SelectTrack(id));
+  };
 
   return (
     <View style={styles.container}>
@@ -25,7 +31,12 @@ const CardContainer = ({ navigation }) => {
         />
       </TouchableOpacity>
       <View style={styles.Cards}>
-        <Carousel items={data} navigation={navigation} type={"songs"} />
+        <Carousel
+          items={data}
+          navigation={navigation}
+          selectTrack={selectTrack}
+          type={"songs"}
+        />
       </View>
     </View>
   );
