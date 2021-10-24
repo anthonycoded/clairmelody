@@ -3,9 +3,14 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
+import NewSection from "./homeScreen/NewSection";
 
 const HomeScreen = () => {
-  return <ScrollView style={styles.container}></ScrollView>;
+  return (
+    <ScrollView style={styles.container}>
+      <NewSection></NewSection>
+    </ScrollView>
+  );
 };
 const styles = StyleSheet.create({
   container: {
