@@ -1,4 +1,4 @@
-initialState = [
+const initialState = [
   {
     id: 1,
     title: "Summer Time",
@@ -37,9 +37,11 @@ initialState = [
   },
 ];
 
+const New_Song = "New_Song";
+
 export const SongsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case New_Merchant:
+    case New_Song:
       return [...state, action.payload];
 
     default:
