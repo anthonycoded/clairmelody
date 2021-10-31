@@ -5,6 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
+import { theme } from "../config/Theme";
 
 const Player = () => {
   const [loading, setLoading] = useState(false);
@@ -97,13 +98,17 @@ const Player = () => {
       <View style={{ width: 50 }}>
         <Image source={{ uri: currentTrack[0].image }} style={styles.image} />
       </View>
-      <Text style={styles.title}>{currentTrack[0].title}</Text>
+      <View style={{ width: 100 }}>
+        <Text style={styles.title}>{currentTrack[0].title}</Text>
+      </View>
       {playing ? (
         <TouchableOpacity onPress={PauseAudio} style={{ width: 50 }}>
           <FontAwesome5 name="pause" size={24} color="black" />
         </TouchableOpacity>
       ) : loading ? (
-        <ActivityIndicator size="large" color="#00ff00" />
+        <View style={{ width: 50 }}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
       ) : (
         <TouchableOpacity style={{ width: 50 }} onPress={() => PlayAudio()}>
           <FontAwesome5 name="play" size={24} color="black" />
@@ -115,11 +120,11 @@ const Player = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "red",
+    backgroundColor: theme.colors.primary,
     height: config.hp("8%"),
     position: "absolute",
     width: "100%",
-    bottom: 80,
+    bottom: config.hp("6%"),
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -128,10 +133,11 @@ const styles = StyleSheet.create({
   },
   image: {
     height: "100%",
-    width: 80,
+    width: 100,
   },
   title: {
     fontSize: 20,
+    color: "white",
   },
 });
 

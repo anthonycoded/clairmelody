@@ -6,8 +6,27 @@ import store from "./src/store/Store";
 import DrawerNavigator from "./src/navigation/DrawerNavigator";
 import { config } from "./src/config/Config";
 import { theme } from "./src/config/Theme";
+import { View, Image, Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
+
+function LogoTitle() {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text style={{ fontSize: 22 }}>Jay's World</Text>
+      <Image
+        style={{ width: 30, height: 30 }}
+        source={require("./assets/earth.png")}
+      />
+    </View>
+  );
+}
 
 function App() {
   return (
@@ -15,18 +34,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName=""
-          screenOptions={{
-            title: "Jay's World",
-            headerTitleAlign: "center",
-            headerStyle: {
-              backgroundColor: theme.colors.primary,
-              textAlign: "center",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
+          screenOptions={{ headerTitle: (props) => <LogoTitle {...props} /> }}
         >
           <Stack.Screen
             name="Drawer"
