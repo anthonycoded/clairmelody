@@ -25,10 +25,6 @@ const Player = () => {
 
   console.log("CurrentTrack: ", currentTrack);
 
-  React.useEffect(() => {
-    LoadAudio();
-  }, []);
-
   useEffect(() => {
     async function reload() {
       const result = await sound.current.getStatusAsync();
