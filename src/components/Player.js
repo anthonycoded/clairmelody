@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     height: config.hp("8%"),
     position: "absolute",
     width: "100%",
-    bottom: config.hp("6%"),
+    bottom: config.hp("9.25%"),
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
