@@ -5,11 +5,11 @@ import { config } from "../../config/Config";
 const SongGridCard = ({ item }) => {
   return (
     <View style={styles.container}>
-      <Image
-        resizeMode="cover"
+      <ImageBackground
+        resizeMode="contain"
         source={{ uri: item.image }}
         style={styles.image}
-      ></Image>
+      ></ImageBackground>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{item.title}</Text>
       </View>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     marginRight: config.wp("2% "),
     borderRadius: 4,
-    height: config.hp("20%"),
+    height: config.hp("25%"),
     alignItems: "center",
     elevation: config.hp("1%"),
     shadowOffset: { width: 0, height: 3 },
@@ -31,8 +31,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: config.wp("60%"),
-    height: "85%",
+    height: 200,
     borderRadius: 4,
+    backgroundColor: "gray",
   },
   titleContainer: {
     flexDirection: "row",
