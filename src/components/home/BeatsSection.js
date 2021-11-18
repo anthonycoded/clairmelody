@@ -1,7 +1,17 @@
-import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
-import SongGridCard from "./SongGridCard";
+import React, { useState, useCallback, useRef } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  ImageBackground,
+} from "react-native";
+import Carousel from "react-native-snap-carousel";
+import { useSelector, useDispatch } from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Audio } from "expo-av";
+import { SelectTrack } from "../../store/actions/PlayerActions";
 
 import { theme } from "../../config/Theme";
 import { config } from "../../config/Config";
@@ -9,32 +19,72 @@ import { config } from "../../config/Config";
 const BeatsSection = ({ navigation }) => {
   const data = useSelector((state) => state.beats);
   const beats = data.sort((a, b) => b.id - a.id);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselItems, setCarouselItems] = useState(beats);
+  const sound = React.useRef(new Audio.Sound());
+  const ref = useRef(null);
+  const dispatch = useDispatch();
 
-  console.log("beats: ", beats);
+  const selectTrack = (id) => {
+    dispatch(SelectTrack(id));
+  };
+
+  const renderItem = useCallback(
+    ({ item, index }) => (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => selectTrack(item.id)}
+      >
+        <ImageBackground
+          source={{ uri: item.image }}
+          style={styles.image}
+          resizeMode="cover"
+        ></ImageBackground>
+        <Text style={{ fontSize: 30, color: "black" }}>{item.title}</Text>
+        <Text>{item.text}</Text>
+      </TouchableOpacity>
+    ),
+    []
+  );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        horizontal
-        data={beats}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <SongGridCard
-            key={item.id}
-            item={item}
-            colors={theme.colors}
-            config={config}
-            navigation={navigation}
-          ></SongGridCard>
-        )}
-      ></FlatList>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
+    >
+      <Carousel
+        layout="default"
+        ref={ref}
+        data={carouselItems}
+        sliderWidth={config.wp("70%")}
+        itemWidth={config.wp("70%")}
+        renderItem={renderItem}
+        onSnapToItem={(index) => setActiveIndex(index)}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  card: {
+    borderRadius: 12,
+    marginLeft: 12,
+  },
   container: {
     paddingBottom: config.hp("4%"),
+    flexDirection: "row",
+  },
+  image: {
+    width: config.wp("100%"),
+    height: 200,
+
+    borderRadius: 5,
+    height: 250,
+
+    alignItems: "center",
   },
 });
 

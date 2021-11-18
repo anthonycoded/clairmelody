@@ -11,12 +11,10 @@ const CardContainer = ({ navigation }) => {
   const data = useSelector((state) => state.songs);
 
   const dispatch = useDispatch();
-
-  const selectTrack = (id) => {
-    dispatch(SelectTrack(id));
-  };
-
   const newest = data[0];
+  const selectTrack = () => {
+    dispatch(SelectTrack());
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +30,7 @@ const CardContainer = ({ navigation }) => {
       >
         Just Released
       </Text>
-      <TouchableOpacity style={styles.card} onPress={() => selectTrack(id)}>
+      <TouchableOpacity style={styles.card} onPress={selectTrack}>
         <Image
           source={{ uri: newest.image }}
           resizeMode="cover"
