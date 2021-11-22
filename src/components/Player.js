@@ -17,13 +17,11 @@ const Player = () => {
   const player = useSelector((state) => state.player);
   let id = player.currentTrack;
   //Get all songs
-  const songs = useSelector((state) => state.songs);
+  const songs = useSelector((state) => state.beats);
   //Filter songs to get current track by id
   let currentTrack = songs.filter((item) => item.id === id);
   //Set audio to currentTrack
   let audio = currentTrack[0].audioUrl;
-
-  console.log("CurrentTrack: ", currentTrack);
 
   useEffect(() => {
     async function reload() {
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
     height: config.hp("8%"),
     position: "absolute",
     width: "100%",
-    bottom: config.hp("9.25%"),
+    bottom: config.hp("10%"),
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
