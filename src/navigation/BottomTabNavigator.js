@@ -27,6 +27,11 @@ const BottomTabNavigator = () => {
           tabStyle: {
             backgroundColor: "#FFFFFF",
           },
+          tabBarStyle: {
+            position: "absolute",
+            justifyContent: "center",
+            height: config.hp("10%"),
+          },
           labelStyle: {
             fontSize: config.hp("1.75%"),
           },
