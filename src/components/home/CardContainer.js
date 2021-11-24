@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import Icon from "react-native-vector-icons/Ionicons";
 import { SelectTrack } from "../../store/actions/PlayerActions";
-import Carousel from "../Carousel";
 import { config } from "../../config/Config";
 import { theme } from "../../config/Theme";
 
@@ -20,10 +18,11 @@ const CardContainer = ({ navigation }) => {
     <View style={styles.container}>
       <Text
         style={{
-          color: theme.colors.primary,
-          paddingBottom: config.hp("4%"),
-          fontSize: 22,
+          fontSize: 32,
           fontWeight: "bold",
+          color: theme.colors.primary,
+          fontWeight: "bold",
+          paddingBottom: config.hp("4%"),
           textAlign: "left",
           width: "100%",
         }}
