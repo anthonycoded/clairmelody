@@ -48,22 +48,35 @@ const BeatsSection = ({ navigation }) => {
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "center",
-      }}
-    >
-      <Carousel
-        layout="default"
-        ref={ref}
-        data={carouselItems}
-        sliderWidth={config.wp("70%")}
-        itemWidth={config.wp("70%")}
-        renderItem={renderItem}
-        onSnapToItem={(index) => setActiveIndex(index)}
-      />
+    <View>
+      <Text
+        style={{
+          fontSize: 32,
+          fontWeight: "bold",
+          color: theme.colors.primary,
+          fontWeight: "bold",
+          paddingVertical: config.hp("1%"),
+        }}
+      >
+        Songs
+      </Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <Carousel
+          layout="default"
+          ref={ref}
+          data={carouselItems}
+          sliderWidth={config.wp("70%")}
+          itemWidth={config.wp("70%")}
+          renderItem={renderItem}
+          onSnapToItem={(index) => setActiveIndex(index)}
+        />
+      </View>
     </View>
   );
 };
@@ -71,10 +84,10 @@ const BeatsSection = ({ navigation }) => {
 const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
-    marginLeft: 12,
+    marginLeft: 24,
   },
   container: {
-    paddingBottom: config.hp("4%"),
+    paddingVertical: config.hp("4%"),
     flexDirection: "row",
   },
   image: {
