@@ -7,7 +7,7 @@ import { config } from "../../config/Config";
 
 const BeatGrid = () => {
   const beats = useSelector((state) => state.beats);
-  const data = useSelector((state) => state.songs);
+  const songs = useSelector((state) => state.songs);
 
   const renderItem = ({ item }) => <BeatCard item={item}></BeatCard>;
   return (
@@ -16,7 +16,7 @@ const BeatGrid = () => {
       <FlatList
         data={beats}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id.toString()}
         horizontal
         contentContainerStyle={{
           justifyContent: "center",
@@ -24,9 +24,9 @@ const BeatGrid = () => {
         }}
       />
       <FlatList
-        data={data}
+        data={songs}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item._id.toString()}
         horizontal
         contentContainerStyle={{
           justifyContent: "center",
