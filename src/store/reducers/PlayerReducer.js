@@ -1,5 +1,5 @@
 const initialState = {
-  currentTrack: 1,
+  currentTrack: undefined,
   nextTrack: "",
   prevTrack: "",
 };
