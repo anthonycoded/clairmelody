@@ -15,13 +15,15 @@ const Player = () => {
 
   //Get current track id
   const player = useSelector((state) => state.player);
-  let id = player.currentTrack;
+
   //Get all songs
-  const songs = useSelector((state) => state.beats);
+  const songs = useSelector((state) => state.songs);
+  await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+  console.log(songs.length);
   //Filter songs to get current track by id
-  let currentTrack = songs.filter((item) => item.id === id);
+  let currentTrack = songs[0];
   //Set audio to currentTrack
-  let audio = currentTrack[0].audioUrl;
+  let audio = currentTrack?.url;
 
   useEffect(() => {
     async function reload() {
@@ -42,6 +44,8 @@ const Player = () => {
   const PlayAudio = async () => {
     try {
       const result = await sound.current.getStatusAsync();
+      const result = await sound.current.loadAsync({ uri: audio }, {}, true);
+
       if (result.isLoaded) {
         if (result.isPlaying === false) {
           sound.current.playAsync();
@@ -65,35 +69,35 @@ const Player = () => {
     } catch (error) {}
   };
 
-  const LoadAudio = async () => {
-    setLoading(true);
-    const checkLoading = await sound.current.getStatusAsync();
-    if (checkLoading.isLoaded === false) {
-      try {
-        const result = await sound.current.loadAsync({ uri: audio }, {}, true);
-        if (result.isLoaded === false) {
-          setLoading(false);
-          console.log("Error in Loading Audio");
-        } else {
-          setLoading(false);
-          setLoaded(true);
-        }
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-  };
+  // const LoadAudio = async () => {
+  //   setLoading(true);
+  //   const checkLoading = await sound.current.getStatusAsync();
+  //   if (checkLoading.isLoaded === false && currentTrack) {
+  //     try {
+  //       const result = await sound.current.loadAsync({ uri: audio }, {}, true);
+  //       if (result.isLoaded === false) {
+  //         setLoading(false);
+  //         console.log("Error in Loading Audio");
+  //       } else {
+  //         setLoading(false);
+  //         setLoaded(true);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
       <View style={{ width: 50 }}>
-        <Image source={{ uri: currentTrack[0].image }} style={styles.image} />
+        <Image source={{ uri: currentTrack?.image }} style={styles.image} />
       </View>
       <View style={{ width: 100 }}>
-        <Text style={styles.title}>{currentTrack[0].title}</Text>
+        <Text style={styles.title}>{currentTrack?.title}</Text>
       </View>
       {playing ? (
         <TouchableOpacity onPress={PauseAudio} style={{ width: 50 }}>
