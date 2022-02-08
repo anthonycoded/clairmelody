@@ -4,8 +4,9 @@
       "name": "Attach to packager",
       "request": "attach",
       "type": "reactnative",
-      "cwd": "${workspaceFolder}",
-      "port": 19002
+      "cwd": "C:/Users/barbe/Desktop/projects/clairmelody",
+      "address": "192.168.1.54",
+      "port": 19000
     }
   ]
 }

@@ -7,6 +7,7 @@ import DrawerNavigator from "./src/navigation/DrawerNavigator";
 import { config } from "./src/config/Config";
 import { theme } from "./src/config/Theme";
 import { View, Image, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ function App() {
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar style="light"></StatusBar>
     </Provider>
   );
 }
