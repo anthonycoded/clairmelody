@@ -7,7 +7,6 @@ import { theme } from "../../config/Theme";
 
 const CardContainer = ({ navigation }) => {
   const data = useSelector((state) => state.songs);
-
   const dispatch = useDispatch();
   const newest = data[0];
   const selectTrack = () => {
@@ -31,12 +30,12 @@ const CardContainer = ({ navigation }) => {
       </Text>
       <TouchableOpacity style={styles.card} onPress={selectTrack}>
         <Image
-          source={{ uri: newest.image }}
+          source={{ uri: newest?.image }}
           resizeMode="cover"
           style={styles.image}
         ></Image>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{newest.title}</Text>
+          <Text style={styles.title}>{newest?.title}</Text>
         </View>
       </TouchableOpacity>
     </View>

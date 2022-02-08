@@ -1,13 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { SongsReducer } from "./reducers/SongsReducer";
+import { songReducer } from "./reducers/songReducer";
 import { PlayerReducer } from "./reducers/PlayerReducer";
-import { BeatsReducers } from "./reducers/BeatsReducer";
+import { beatReducer } from "./reducers/beatReducer";
 
 const rootReducer = combineReducers({
-  songs: SongsReducer,
+  songs: songReducer,
   player: PlayerReducer,
-  beats: BeatsReducers,
+  beats: beatReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
