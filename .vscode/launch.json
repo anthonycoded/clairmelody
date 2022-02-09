@@ -4,8 +4,8 @@
       "name": "Attach to packager",
       "request": "attach",
       "type": "reactnative",
-      "cwd": "C:/Users/barbe/Desktop/projects/clairmelody",
-      "address": "192.168.1.54",
+      "cwd": "C:/Users/sbarbel/Desktop/projects/clairmelody",
+      "address": "192.168.2.144",
       "port": 19000
     }
   ]
