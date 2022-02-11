@@ -33,7 +33,7 @@ const BeatsSection = ({ navigation }) => {
     ({ item, index }) => (
       <TouchableOpacity
         style={styles.card}
-        onPress={() => selectTrack(item.id)}
+        onPress={() => selectTrack(item._id)}
       >
         <ImageBackground
           source={{ uri: item.image }}

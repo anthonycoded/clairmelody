@@ -5,8 +5,8 @@
       "request": "attach",
       "type": "reactnative",
       "cwd": "C:/Users/barbe/Desktop/projects/clairmelody",
-      "address": "192.168.1.54",
-      "port": 19000
+      "address": "192.168.1.52",
+      "port": 19002
     }
   ]
 }
