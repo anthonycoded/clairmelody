@@ -8,12 +8,13 @@ const BeatCard = ({ item }) => {
   const dispatch = useDispatch();
 
   const selectTrack = (id) => {
+    console.log("selected track");
     dispatch(SelectTrack(id));
   };
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => selectTrack(item.id)}
+      onPress={() => selectTrack(item._id)}
     >
       <Image
         source={{ uri: item.image }}
