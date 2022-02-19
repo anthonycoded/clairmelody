@@ -3,16 +3,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import store from "./src/store/Store";
 import { StatusBar } from "expo-status-bar";
-
+import { Provider as PaperProvider } from "react-native-paper";
+import { theme } from "./src/config/Theme";
 import AppWrapper from "./AppWrapper";
 
 function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <PaperProvider theme={theme}>
         <AppWrapper></AppWrapper>
-      </NavigationContainer>
-      <StatusBar style="light"></StatusBar>
+
+        <StatusBar style="light"></StatusBar>
+      </PaperProvider>
     </Provider>
   );
 }

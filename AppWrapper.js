@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AppLoading from "expo-app-loading";
 import { View, Text, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBeats } from "./src/store/actions/beatActions";
-import { GetSongs } from "./src/store/actions/songActions";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import DrawerNavigator from "./src/navigation/DrawerNavigator";
+import { Asset } from "expo-asset";
+import AppNavigation from "./src/navigation/AppNavigation";
+import { theme } from "./src/config/Theme";
 
 const AppWrapper = () => {
   const [ready, setReady] = useState(false);
   const Stack = createNativeStackNavigator();
   const dispatch = useDispatch();
 
-  function loadData() {
-    dispatch(GetBeats());
-    dispatch(GetSongs());
-  }
+  async function loadCacheAssets() {
+    const images = [require("./assets/banner.jpg")];
 
-  // useEffect(() => {
-  //   loadData();
-  // }, []);
+    const cacheImages = images.map((image) => {
+      return Asset.fromModule(image).downloadAsync();
+    });
+    return Promise.all(cacheImages);
+  }
 
   function LogoTitle() {
     return (
@@ -41,24 +41,13 @@ const AppWrapper = () => {
   if (!ready) {
     return (
       <AppLoading
-        startAsync={loadData}
+        startAsync={loadCacheAssets}
         onFinish={() => setReady(true)}
         onError={console.warn}
       />
     );
   }
-  return (
-    <Stack.Navigator
-      initialRouteName=""
-      screenOptions={{ headerTitle: (props) => <LogoTitle {...props} /> }}
-    >
-      <Stack.Screen
-        name="Drawer"
-        component={DrawerNavigator}
-        options={{}}
-      ></Stack.Screen>
-    </Stack.Navigator>
-  );
+  return <AppNavigation />;
 };
 
 export default AppWrapper;
