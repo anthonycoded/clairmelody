@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { config } from "../config/Config";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -7,23 +7,23 @@ import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
 import { theme } from "../config/Theme";
 
-const playbackInstance = new Audio.Sound();
-
 const Player = () => {
   const player = useSelector((state) => state.player); //Get current track id
   const songs = useSelector((state) => state.songs); //Get all songs
+  const playbackInstance = useRef(new Audio.Sound());
+  let track = songs.filter((item) => item._id == player.currentTrack);
+  let currentTrack = track[0] ? track[0] : songs[0]; //Filter songs to get current track by id
 
-  let state = {
-    isPlaying: false,
-    isLoaded: false,
+  const [state, setState] = useState({
+    isPlaying: undefined,
+    isLoaded: undefined,
+    isLoading: undefined,
     currentIndex: 0,
     volume: 1.0,
-    isBuffering: false,
+    isBuffering: undefined,
     error: undefined,
-  };
-
-  let track = songs.filter((item) => item._id == player.currentTrack);
-  let currentTrack = track[0] || songs[0]; //Filter songs to get current track by id
+    url: currentTrack.url,
+  });
 
   async function init() {
     try {
@@ -36,83 +36,112 @@ const Player = () => {
         staysActiveInBackground: true,
         playThroughEarpieceAndroid: true,
       });
-
-      if (state.isLoaded == false && currentTrack) {
-        await loadAudio();
-      }
+      //await loadAudio();
     } catch (e) {
       console.log(e);
     }
   }
 
-  useEffect(() => {
-    init();
-  }, []);
+  async function reload() {
+    try {
+      setState({
+        ...state,
+        isLoading: true,
+      });
+      if (state?.isPlaying) {
+        await playbackInstance.current.pauseAsync();
+      }
+      await playbackInstance.current.unloadAsync();
+      await loadAudio();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function loadAudio() {
     const { currentIndex, isPlaying, volume } = state;
+    let currentStatus = await playbackInstance?.current?.getStatusAsync();
 
-    try {
-      let source = {
-        uri: currentTrack?.url,
-      };
+    if (currentTrack?.url && !currentStatus.isLoaded) {
+      try {
+        let source = {
+          uri: currentTrack?.url,
+        };
 
-      let status = {
-        shouldPlay: isPlaying,
-        volume: volume,
-      };
+        let status = {
+          shouldPlay: false,
+          volume: volume,
+        };
 
-      if (state.isLoaded == false) {
-        await playbackInstance.loadAsync(source, status, false);
+        let data = await playbackInstance?.current?.loadAsync(
+          source,
+          status,
+          false
+        );
+
+        // setState({
+        //   ...state,
+        //   isLoaded: data.isLoaded,
+        //   isPlaying: data.isPlaying,
+        // });
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }
-  handlePlayPause = async () => {
-    if (state.isLoaded == true) {
+  const handlePlayPause = async () => {
+    let currentStatus = await playbackInstance.current.getStatusAsync();
+    if (currentStatus.isLoaded == true && !currentStatus.isBuffering) {
       try {
-        state.isPlaying
-          ? await playbackInstance.pauseAsync()
-          : await playbackInstance.playAsync();
+        currentStatus.isPlaying
+          ? await playbackInstance.current.pauseAsync()
+          : await playbackInstance.current.playAsync();
       } catch (error) {
         console.log(error);
       }
+      return;
     }
   };
-  async function reload() {
+
+  async function statusUpdate() {
+    playbackInstance.current._onPlaybackStatusUpdate = (status) => {
+      setState({
+        ...state,
+        isLoaded: status.isLoaded,
+        isPlaying: status.isPlaying,
+        isBuffering: status.isBuffering,
+        error: status.error,
+        isLoading: status.isLoading,
+        url: status.uri,
+      });
+    };
+  }
+  async function StatusUpdate() {
     try {
-      if (state.isPlaying) {
-        await playbackInstance.pauseAsync();
+      await statusUpdate();
+      if (
+        (!playbackInstance.current._loaded &&
+          !playbackInstance.current._loading) ||
+        !playbackInstance.current
+      ) {
+        await loadAudio();
       }
-      await playbackInstance.unloadAsync();
-      await init();
+      await statusUpdate();
+      if (playbackInstance.current._loaded && state.url != currentTrack.url) {
+        await reload();
+      }
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    async function statusUpdate() {
-      playbackInstance._onPlaybackStatusUpdate = (status) => {
-        state = {
-          ...state,
-          isLoaded: status.isLoaded,
-          isPlaying: status.isPlaying,
-          isBuffering: status.isBuffering,
-          error: status.error,
-        };
-      };
-    }
-    statusUpdate();
-  }, [playbackInstance]);
-  console.log(state);
+    StatusUpdate();
+  }, [currentTrack, playbackInstance.current]);
 
   useEffect(() => {
-    if (currentTrack) {
-      reload();
-    }
-  }, [currentTrack]);
+    init();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -122,16 +151,22 @@ const Player = () => {
       <View style={{ width: 100 }}>
         <Text style={styles.title}>{currentTrack?.title}</Text>
       </View>
-      {state.isPlaying ? (
-        <TouchableOpacity onPress={handlePlayPause} style={{ width: 50 }}>
+      {state.isPlaying == true ? (
+        <TouchableOpacity
+          onPress={() => handlePlayPause()}
+          style={{ width: 50 }}
+        >
           <FontAwesome5 name="pause" size={24} color="black" />
         </TouchableOpacity>
-      ) : state.isBuffering ? (
+      ) : !state.isLoaded || state.isLoading ? (
         <View style={{ width: 50 }}>
           <ActivityIndicator size="large" color="#00ff00" />
         </View>
       ) : (
-        <TouchableOpacity style={{ width: 50 }} onPress={handlePlayPause}>
+        <TouchableOpacity
+          style={{ width: 50, padding: 10 }}
+          onPress={handlePlayPause}
+        >
           <FontAwesome5 name="play" size={24} color="black" />
         </TouchableOpacity>
       )}
