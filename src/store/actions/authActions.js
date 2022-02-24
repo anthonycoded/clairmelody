@@ -1,6 +1,5 @@
 import axios from "axios";
-import Cookies, { get } from "js-cookie";
-import Cookie from "js-cookie";
+
 const USER_LOGIN_ATTEMPT = "USER_LOGIN_ATTEMPT";
 const USER_LOGIN_SUCCESS1 = "USER_LOGIN_SUCCESS1";
 const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
@@ -8,62 +7,17 @@ const CLEAR_LOGIN_STATE = "CLEAR_LOGIN_STATE";
 const CHECK_USERNAME_SUCCESS = "CHECK_USERNAME_SUCCESS";
 const CHECK_ANSWER_SUCCESS = "CHECK_ANSWER_SUCCESS";
 const UPDATE_PASSWORD_FAILED = "UPDATE_PASSWORD_FAILED";
-const Check_Auth = "Check_Auth";
 
 axios.defaults.withCredentials = true;
 
 /////////////////////////////////LOGIN ACTIONs///////////////////////////////////////////////
-
-export const checkAuth = (payload) => async (dispatch) => {
-  const checkAuth = async () => {
-    let auth = Cookie.get("authorized");
-    let id = Cookie.get("id");
-    let username = Cookie.get("username");
-    await getAdmin();
-
-    if (!auth || !id || !username) {
-      setUser({
-        ...user,
-        id: undefined,
-        username: undefined,
-        authorized: false,
-        admin: false,
-      });
-      return;
-    }
-    try {
-      setUser({
-        ...user,
-        id: id,
-        username: username,
-        authorized: true,
-      });
-
-      if (adminId === id) {
-        console.log("admin logged in");
-        Cookies.set("admin", true);
-        setUser({
-          ...user,
-          id: id,
-          username: username,
-          authorized: true,
-          admin: true,
-        });
-        return;
-      }
-    } catch (error) {
-      connsole.log(error);
-    }
-  };
-  dispatch({ type: Check_Auth, payload: payload });
-};
 export const userLoginMain = (user) => async (dispatch) => {
   const { email, password } = user;
 
   try {
     const requestData = {
-      email: email,
-      password: password,
+      email: "admin@email.com",
+      password: "password",
     };
 
     let response = await axios.post(
@@ -71,10 +25,10 @@ export const userLoginMain = (user) => async (dispatch) => {
       requestData,
       {
         headers: { "Content-type": "application/json; charset=utf-8" },
-        withCredentials: false,
+        withCredentials: true,
       }
     );
-    console.log(response.data);
+    //console.log(response.data);
 
     if (response.status == 200) {
       //Login success = add response msg to state then navigate to homestack
@@ -88,6 +42,16 @@ export const userLoginMain = (user) => async (dispatch) => {
         type: USER_LOGIN_FAIL,
         payload: {
           error: "Username or Password incorrect. Please try again",
+          status: 401,
+        },
+      });
+    }
+    if (error.response.status == 500) {
+      console.log(error.response.data);
+      dispatch({
+        type: USER_LOGIN_FAIL,
+        payload: {
+          error: "Seems like our servers are down, please try again later",
           status: 401,
         },
       });
