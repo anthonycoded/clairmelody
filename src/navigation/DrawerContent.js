@@ -4,6 +4,7 @@ import { Avatar, Drawer, Text } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { AntDesign } from "@expo/vector-icons";
 
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
@@ -52,6 +53,7 @@ const DrawerContent = ({ navigation }) => {
       flexDirection: "column",
       justifyContent: "space-between",
       paddingVertical: config.hp(".5%"),
+      height: "100%",
       // backgroundColor: "yellow",
     },
     drawerItem: {
@@ -99,128 +101,59 @@ const DrawerContent = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView navigation={navigation} style={styles.drawer}>
-        <View style={styles.drawerContent}>
-          <View style={styles.userInfoSection}>
-            <View style={styles.userImageContainer}></View>
-            <View style={styles.sideContainer}>
-              <View style={styles.userSettingsContainer}>
-                <Text style={styles.userName}>Jane Smith</Text>
-                <TouchableOpacity
-                  style={styles.userSettings}
-                  onPress={() => {
-                    navigation.navigate("Profile/Settings");
-                  }}
-                >
-                  <Text style={styles.userSettingsText}>Profile</Text>
-                  <Text style={styles.userSettingsText}>Settings</Text>
-                  <Text style={styles.userSettingsText}>Disclosures</Text>
-                </TouchableOpacity>
-              </View>
-              <Icon
-                name="close"
-                color={colors.primary}
-                size={config.hp("4.5%")}
-                onPress={() => {
-                  navigation.toggleDrawer();
-                }}
-              />
-            </View>
-          </View>
-          {/* <View style={styles.row}></View> */}
-        </View>
-
         <Drawer.Section style={styles.drawerSection}>
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Accounts"
-            onPress={() => {
-              navigation.navigate("Accounts");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Mobile Deposit"
-            onPress={() => {
-              navigation.navigate("depositTab");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Transfer Funds"
-            onPress={() => {
-              navigation.navigate("transferTab");
-            }}
-          />
+          <View style={{ height: "50%" }}>
+            <DrawerItem
+              style={styles.drawerItem}
+              labelStyle={styles.labelStyle}
+              label="Songs"
+              onPress={() => {
+                navigation.navigate("Accounts");
+              }}
+            />
+            <DrawerItem
+              style={styles.drawerItem}
+              labelStyle={styles.labelStyle}
+              label="Beats"
+              onPress={() => {
+                navigation.navigate("depositTab");
+              }}
+            />
 
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="BillPay"
-            onPress={() => {
-              navigation.navigate("BillPayStack");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Card Control"
-            onPress={() => {
-              navigation.navigate("CardControls");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="eStatements"
-            onPress={() => {
-              navigation.navigate("E-statements");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="eMessage center"
-            onPress={() => {
-              navigation.navigate("e-message");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="eSafe"
-            onPress={() => {
-              navigation.navigate("e-safe");
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Reminders"
-            onPress={() => {
-              navigation.navigate("Profile/Settings", {
-                screen: "profileReminders",
-              });
-            }}
-          />
-          <DrawerItem
-            style={styles.drawerItem}
-            labelStyle={styles.labelStyle}
-            label="Alerts"
-            onPress={() => {
-              navigation.navigate("Alerts");
-            }}
-          />
-          <DrawerItem
-            style={[styles.drawerItem, styles.drawerItem2]}
-            labelStyle={styles.labelStyle}
-            label="Logout"
-            onPress={() => {
-              navigation.navigate("Camera");
-            }}
-          />
+            <DrawerItem
+              style={styles.drawerItem}
+              labelStyle={styles.labelStyle}
+              label="Explore"
+              onPress={() => {
+                navigation.navigate("E-statements");
+              }}
+            />
+          </View>
+          <View style={{ height: "50%", justifyContent: "flex-end" }}>
+            <DrawerItem
+              style={styles.drawerItem}
+              labelStyle={styles.labelStyle}
+              label="Profile"
+              onPress={() => {
+                navigation.navigate("ProfileNavigator");
+              }}
+            />
+            <DrawerItem
+              style={styles.drawerItem}
+              labelStyle={styles.labelStyle}
+              label="Settings"
+              onPress={() => {
+                navigation.navigate("Alerts");
+              }}
+            />
+            <DrawerItem
+              style={[styles.drawerItem, styles.drawerItem]}
+              labelStyle={styles.labelStyle}
+              label="Logout"
+              //icon={() => <LogoutIcon />}
+              onPress={() => logout()}
+            />
+          </View>
 
           <View style={{ paddingHorizontal: 15 }}></View>
         </Drawer.Section>
