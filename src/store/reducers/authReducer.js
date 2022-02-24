@@ -5,7 +5,6 @@ const USER_LOGIN_ATTEMPT = "USER_LOGIN_ATTEMPT";
 const USER_LOGIN_FAIL = " USER_LOGIN_FAIL";
 const CLEAR_LOGIN_STATE = "CLEAR_LOGIN_STATE";
 const Check_Auth = "Check_Auth";
-import Cookies from "js-cookie";
 
 //SET INITIAL STATE
 const initialState = {
@@ -38,8 +37,6 @@ export const authReducer = (state = initialState, action) => {
       };
 
     case CLEAR_LOGIN_STATE:
-      Cookies.set("admin", false);
-      Cookies.set("token", undefined);
       return {
         loading: false,
         message: null,
@@ -51,10 +48,7 @@ export const authReducer = (state = initialState, action) => {
         questionsSuccess: false,
       };
     case USER_LOGIN_SUCCESS1:
-      console.log(action.payload);
       let { admin, success, user, token, id } = action.payload;
-      Cookies.set("admin", admin, { expires: 1 });
-      Cookies.set("token", token, { expires: 1 });
 
       return {
         ...state,
