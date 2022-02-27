@@ -8,7 +8,6 @@ const BeatCard = ({ item }) => {
   const dispatch = useDispatch();
 
   const selectTrack = (id) => {
-    console.log("selected track");
     dispatch(SelectTrack(id));
   };
   return (
