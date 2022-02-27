@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import BeatCard from "./BeatCard";
-import { theme } from "../../config/Theme";
-import { config } from "../../config/Config";
+import { theme } from "../../../../config/Theme";
+import { config } from "../../../../config/Config";
 
 const BeatGrid = () => {
   const beats = useSelector((state) => state.beats);
