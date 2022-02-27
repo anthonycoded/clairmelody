@@ -8,7 +8,7 @@ import { theme } from "../../config/Theme";
 const CardContainer = ({ navigation }) => {
   const data = useSelector((state) => state.songs);
   const dispatch = useDispatch();
-  const newest = data[0];
+  const newest = data[2];
   const selectTrack = () => {
     dispatch(SelectTrack());
   };
