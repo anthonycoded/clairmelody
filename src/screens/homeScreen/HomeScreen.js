@@ -1,18 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-import { config } from "../config/Config";
-import { theme } from "../config/Theme";
-import CardContainer from "../components/home/CardContainer";
-import BeatsSection from "../components/home/BeatsSection";
-import BeatGrid from "../components/home/BeatGrid";
+import { config } from "../../config/Config";
+import { theme } from "../../config/Theme";
+import CardContainer from "../../components/home/CardContainer";
+import TrendingSongs from "../../components/home/TrendingSongs";
+import BeatGridSection from "./sections/beatgrid/BeatGridSection";
+import SongGridSection from "./sections/songGrid/SongGridSection";
 
 const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <CardContainer></CardContainer>
-      <BeatsSection navigation={navigation}></BeatsSection>
-      <BeatGrid></BeatGrid>
+      <TrendingSongs></TrendingSongs>
+      <SongGridSection></SongGridSection>
+      <BeatGridSection></BeatGridSection>
       <View style={{ paddingBottom: config.hp("16%") }}></View>
     </ScrollView>
   );
