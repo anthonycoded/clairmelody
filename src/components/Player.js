@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { config } from "../config/Config";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
 import { theme } from "../config/Theme";
@@ -13,6 +20,12 @@ const Player = () => {
   const playbackInstance = useRef(new Audio.Sound());
   let track = songs.filter((item) => item._id == player.currentTrack);
   let currentTrack = track[0] ? track[0] : songs[0]; //Filter songs to get current track by id
+  const [expanded, setExpanded] = useState();
+  const [image, setImage] = useState();
+
+  function toggleExpanded() {
+    setExpanded(!expanded);
+  }
 
   const [state, setState] = useState({
     isPlaying: undefined,
@@ -143,33 +156,161 @@ const Player = () => {
     init();
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <View style={{ width: 50 }}>
-        <Image source={{ uri: currentTrack?.image }} style={styles.image} />
-      </View>
-      <View style={{ width: 100 }}>
-        <Text style={styles.title}>{currentTrack?.title}</Text>
-      </View>
-      {state.isPlaying == true ? (
+  useEffect(() => {
+    setImage(currentTrack.image);
+  }, [currentTrack]);
+
+  const ImageWrapper = React.memo((props) => (
+    <Image
+      resizeMode="cover"
+      resizeMethod="scale"
+      source={{ uri: image }}
+      style={{ width: "100%", height: config.hp("35%") }}
+    ></Image>
+  ));
+
+  const ExpandedView = () => (
+    <View
+      style={{
+        height: "100%",
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <View
+        style={{
+          width: config.wp("100%"),
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          position: "absolute",
+          zIndex: 20,
+        }}
+      >
         <TouchableOpacity
-          onPress={() => handlePlayPause()}
-          style={{ width: 50 }}
-        >
-          <FontAwesome5 name="pause" size={24} color="black" />
-        </TouchableOpacity>
-      ) : !state.isLoaded || state.isLoading ? (
-        <View style={{ width: 50 }}>
-          <ActivityIndicator size="large" color="#00ff00" />
+          onPress={toggleExpanded}
+          style={{
+            height: config.hp("1.5%"),
+            backgroundColor: "black",
+            width: "30%",
+            borderRadius: 7,
+            position: "relative",
+            top: 0,
+          }}
+        ></TouchableOpacity>
+      </View>
+      <ImageWrapper></ImageWrapper>
+
+      <View
+        style={{
+          width: "100%",
+
+          flexDirection: "row",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          position: "relative",
+          flex: 1,
+        }}
+      >
+        {state.isPlaying == true ? (
+          <TouchableOpacity
+            onPress={() => handlePlayPause()}
+            style={{ width: 50, padding: 10, display: "flex" }}
+          >
+            <FontAwesome5 name="pause" size={24} color="black" />
+          </TouchableOpacity>
+        ) : !state.isLoaded || state.isLoading ? (
+          <View style={{ width: 50, padding: 10, display: "flex" }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={{ width: 50, padding: 10, display: "flex" }}
+            onPress={handlePlayPause}
+          >
+            <FontAwesome5 name="play" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
+  );
+
+  const InlineView = () => (
+    <>
+      <TouchableOpacity
+        onPress={toggleExpanded}
+        style={{
+          width: config.wp("80%"),
+          height: "100%",
+
+          position: "relative",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          overflow: "hidden",
+        }}
+      >
+        <View style={{ width: 100 }}>
+          <Image source={{ uri: currentTrack?.image }} style={styles.image} />
         </View>
-      ) : (
-        <TouchableOpacity
-          style={{ width: 50, padding: 10 }}
-          onPress={handlePlayPause}
+
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
         >
-          <FontAwesome5 name="play" size={24} color="black" />
-        </TouchableOpacity>
-      )}
+          <Text style={styles.title}>{currentTrack?.title}</Text>
+        </View>
+      </TouchableOpacity>
+      <View
+        style={{
+          width: config.wp("20%"),
+          flexDirection: "row",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          position: "relative",
+          marginLeft: config.wp("1%"),
+        }}
+      >
+        {state.isPlaying == true ? (
+          <TouchableOpacity
+            onPress={() => handlePlayPause()}
+            style={{ width: 50, padding: 10 }}
+          >
+            <FontAwesome5 name="pause" size={24} color="black" />
+          </TouchableOpacity>
+        ) : !state.isLoaded || state.isLoading ? (
+          <View style={{ width: 50, padding: 10 }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={{ width: 50, padding: 10 }}
+            onPress={handlePlayPause}
+          >
+            <FontAwesome5 name="play" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+    </>
+  );
+
+  return (
+    <View
+      style={{
+        ...styles.container,
+        height: expanded ? config.hp("70%") : config.hp("8%"),
+      }}
+    >
+      {expanded ? <ExpandedView></ExpandedView> : <InlineView></InlineView>}
     </View>
   );
 };
@@ -177,7 +318,7 @@ const Player = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.primary,
-    height: config.hp("8%"),
+
     position: "absolute",
     width: "100%",
     bottom: config.hp("10%"),
@@ -194,6 +335,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: "white",
+    textTransform: "capitalize",
+    width: "100%",
+    textAlign: "center",
   },
 });
 
