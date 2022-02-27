@@ -16,7 +16,9 @@ import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 const BeatsScreen = () => {
-  const beats = useSelector((state) => state.beats).sort((a, b) => a.id - b.id);
+  const beats = useSelector((state) => state.beats).sort(
+    (a, b) => a._id - b._id
+  );
   const dispatch = useDispatch();
 
   const selectTrack = (id) => {
@@ -24,7 +26,7 @@ const BeatsScreen = () => {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item.id)}>
+    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item._id)}>
       <Image source={{ uri: item.image }} style={styles.image}></Image>
       <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
@@ -63,7 +65,7 @@ const BeatsScreen = () => {
         <FlatList
           data={beats}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
           contentContainerStyle={{
             paddingBottom: config.hp("12%"),
           }}
