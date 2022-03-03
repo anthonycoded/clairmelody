@@ -7,8 +7,8 @@ import { SelectTrack } from "../../../../store/actions/PlayerActions";
 const BeatCard = ({ item }) => {
   const dispatch = useDispatch();
 
-  const selectTrack = (id) => {
-    dispatch(SelectTrack(id));
+  const selectTrack = () => {
+    dispatch(SelectTrack(item));
   };
   return (
     <TouchableOpacity
