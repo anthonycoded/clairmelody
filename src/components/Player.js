@@ -3,31 +3,36 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ActivityIndicator,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { config } from "../config/Config";
 import { FontAwesome5 } from "@expo/vector-icons";
-
+import { Ionicons } from "@expo/vector-icons";
+import * as Progress from "react-native-progress";
 import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
+import { UpdateState } from "../store/actions/PlayerActions";
 import { theme } from "../config/Theme";
+import { formatMilliseconds } from "../../utils";
+
+//import ImageWrapper from "./player/ImageWrapper";
 
 const Player = () => {
   const player = useSelector((state) => state.player); //Get current track id
   const songs = useSelector((state) => state.songs); //Get all songs
+  const beats = useSelector((state) => state.beats); //get all beats
+  const library = [...songs, ...beats];
   const playbackInstance = useRef(new Audio.Sound());
-  let track = songs.filter((item) => item._id == player.currentTrack);
-  let currentTrack = track[0] ? track[0] : songs[0]; //Filter songs to get current track by id
+  let currentTrack = player.currentTrack ? player.currentTrack : library[0]; //Filter songs to get current track by id
   const [expanded, setExpanded] = useState();
-  const [image, setImage] = useState();
+  const dispatch = useDispatch();
+  const image = useRef(currentTrack.image);
+  const [playing, setPlaying] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
-  function toggleExpanded() {
-    setExpanded(!expanded);
-  }
-
-  const [state, setState] = useState({
+  let state = useRef({
     isPlaying: undefined,
     isLoaded: undefined,
     isLoading: undefined,
@@ -37,6 +42,16 @@ const Player = () => {
     error: undefined,
     url: currentTrack.url,
   });
+
+  let progress = state.current.currentPosition / state.current.duration;
+  let duration = formatMilliseconds(state.current.duration);
+  let position = formatMilliseconds(state.current.currentPosition);
+
+  console.log(progress);
+
+  function toggleExpanded() {
+    setExpanded(!expanded);
+  }
 
   async function init() {
     try {
@@ -57,11 +72,11 @@ const Player = () => {
 
   async function reload() {
     try {
-      setState({
-        ...state,
-        isLoading: true,
-      });
-      if (state?.isPlaying) {
+      // setState({
+      //   ...state,
+      //   isLoading: true,
+      // });
+      if (state.current?.isPlaying) {
         await playbackInstance.current.pauseAsync();
       }
       await playbackInstance.current.unloadAsync();
@@ -72,7 +87,7 @@ const Player = () => {
   }
 
   async function loadAudio() {
-    const { currentIndex, isPlaying, volume } = state;
+    const { currentIndex, isPlaying, volume } = state.current;
     let currentStatus = await playbackInstance?.current?.getStatusAsync();
 
     if (currentTrack?.url && !currentStatus.isLoaded) {
@@ -93,10 +108,11 @@ const Player = () => {
         );
 
         // setState({
-        //   ...state,
+        //   ...state.current,
         //   isLoaded: data.isLoaded,
         //   isPlaying: data.isPlaying,
         // });
+        setLoaded(data.isLoaded);
       } catch (e) {
         console.log(e);
       }
@@ -107,8 +123,8 @@ const Player = () => {
     if (currentStatus.isLoaded == true && !currentStatus.isBuffering) {
       try {
         currentStatus.isPlaying
-          ? await playbackInstance.current.pauseAsync()
-          : await playbackInstance.current.playAsync();
+          ? (await playbackInstance.current.pauseAsync(), setPlaying(false))
+          : (await playbackInstance.current.playAsync(), setPlaying(true));
       } catch (error) {
         console.log(error);
       }
@@ -118,15 +134,19 @@ const Player = () => {
 
   async function statusUpdate() {
     playbackInstance.current._onPlaybackStatusUpdate = (status) => {
-      setState({
-        ...state,
+      //console.log(status);
+
+      state.current = {
+        ...state.current,
         isLoaded: status.isLoaded,
         isPlaying: status.isPlaying,
         isBuffering: status.isBuffering,
         error: status.error,
         isLoading: status.isLoading,
         url: status.uri,
-      });
+        duration: status.durationMillis,
+        currentPosition: status.positionMillis,
+      };
     };
   }
   async function StatusUpdate() {
@@ -140,7 +160,10 @@ const Player = () => {
         await loadAudio();
       }
       await statusUpdate();
-      if (playbackInstance.current._loaded && state.url != currentTrack.url) {
+      if (
+        playbackInstance.current._loaded &&
+        state.current.url != currentTrack.url
+      ) {
         await reload();
       }
     } catch (error) {
@@ -150,24 +173,14 @@ const Player = () => {
 
   useEffect(() => {
     StatusUpdate();
-  }, [currentTrack, playbackInstance.current]);
+    image.current = currentTrack.image;
+  }, [player]);
 
   useEffect(() => {
     init();
   }, []);
 
-  useEffect(() => {
-    setImage(currentTrack.image);
-  }, [currentTrack]);
-
-  const ImageWrapper = React.memo((props) => (
-    <Image
-      resizeMode="cover"
-      resizeMethod="scale"
-      source={{ uri: image }}
-      style={{ width: "100%", height: config.hp("35%") }}
-    ></Image>
-  ));
+  console.log(state.current);
 
   const ExpandedView = () => (
     <View
@@ -200,43 +213,103 @@ const Player = () => {
           }}
         ></TouchableOpacity>
       </View>
-      <ImageWrapper></ImageWrapper>
+      <Image
+        resizeMode="cover"
+        resizeMethod="scale"
+        source={{ uri: image.current }}
+        style={{ width: "100%", height: config.hp("35%") }}
+      ></Image>
+      <Text
+        style={{
+          fontSize: 22,
+          color: "white",
+          textTransform: "capitalize",
+          fontWeight: "bold",
+          paddingVertical: config.hp("2%"),
 
+          width: "90%",
+        }}
+      >
+        {currentTrack.title}
+      </Text>
+      <View
+        style={{
+          height: config.hp("5%"),
+          width: "100%",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Progress.Bar
+          progress={progress}
+          width={config.wp("90%")}
+          color="white"
+        />
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: config.wp("90%"),
+            paddingVertical: 4,
+          }}
+        >
+          <Text style={{ color: "white" }}>{position}</Text>
+          <Text style={{ color: "white" }}>{duration}</Text>
+        </View>
+      </View>
       <View
         style={{
           width: "100%",
-
-          flexDirection: "row",
-          alignItems: "flex-end",
-          justifyContent: "center",
-          position: "relative",
           flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          paddingHorizontal: config.wp("8%"),
         }}
       >
-        {state.isPlaying == true ? (
+        <TouchableOpacity
+          style={{ width: config.wp("30%"), alignItems: "center" }}
+        >
+          <Ionicons name="play-skip-back" size={50} style={styles.button} />
+        </TouchableOpacity>
+        {playing == true ? (
           <TouchableOpacity
+            style={{
+              width: config.wp("30%"),
+              alignItems: "center",
+              paddingLeft: 10,
+            }}
             onPress={() => handlePlayPause()}
-            style={{ width: 50, padding: 10, display: "flex" }}
           >
-            <FontAwesome5 name="pause" size={24} color="black" />
+            <FontAwesome5 name="pause" size={60} style={styles.button} />
           </TouchableOpacity>
-        ) : !state.isLoaded || state.isLoading ? (
+        ) : !loaded || state.current.isLoading ? (
           <View style={{ width: 50, padding: 10, display: "flex" }}>
             <ActivityIndicator size="large" color="#00ff00" />
           </View>
         ) : (
           <TouchableOpacity
-            style={{ width: 50, padding: 10, display: "flex" }}
+            style={{
+              width: config.wp("30%"),
+              alignItems: "center",
+              paddingLeft: 10,
+            }}
             onPress={handlePlayPause}
           >
-            <FontAwesome5 name="play" size={24} color="black" />
+            <FontAwesome5 name="play" size={60} style={styles.button} />
           </TouchableOpacity>
         )}
+        <TouchableOpacity
+          style={{ width: config.wp("30%"), alignItems: "center" }}
+        >
+          <Ionicons name="play-skip-forward" size={50} style={styles.button} />
+        </TouchableOpacity>
       </View>
     </View>
   );
 
-  const InlineView = () => (
+  const InlineView = React.memo(() => (
     <>
       <TouchableOpacity
         onPress={toggleExpanded}
@@ -253,7 +326,12 @@ const Player = () => {
         }}
       >
         <View style={{ width: 100 }}>
-          <Image source={{ uri: currentTrack?.image }} style={styles.image} />
+          <Image
+            resizeMode="cover"
+            resizeMethod="scale"
+            source={{ uri: image.current }}
+            style={{ width: "100%", height: config.hp("35%") }}
+          ></Image>
         </View>
 
         <View
@@ -280,14 +358,14 @@ const Player = () => {
           marginLeft: config.wp("1%"),
         }}
       >
-        {state.isPlaying == true ? (
+        {playing == true ? (
           <TouchableOpacity
             onPress={() => handlePlayPause()}
             style={{ width: 50, padding: 10 }}
           >
             <FontAwesome5 name="pause" size={24} color="black" />
           </TouchableOpacity>
-        ) : !state.isLoaded || state.isLoading ? (
+        ) : !loaded || state.current.isLoading ? (
           <View style={{ width: 50, padding: 10 }}>
             <ActivityIndicator size="large" color="#00ff00" />
           </View>
@@ -301,7 +379,7 @@ const Player = () => {
         )}
       </View>
     </>
-  );
+  ));
 
   return (
     <View
@@ -316,6 +394,9 @@ const Player = () => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    padding: 10,
+  },
   container: {
     backgroundColor: theme.colors.primary,
 
@@ -326,7 +407,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: config.wp("2%"),
   },
   image: {
     height: "100%",
