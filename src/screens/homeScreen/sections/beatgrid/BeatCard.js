@@ -7,14 +7,11 @@ import { SelectTrack } from "../../../../store/actions/PlayerActions";
 const BeatCard = ({ item }) => {
   const dispatch = useDispatch();
 
-  const selectTrack = (id) => {
-    dispatch(SelectTrack(id));
+  const selectTrack = () => {
+    dispatch(SelectTrack(item));
   };
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => selectTrack(item._id)}
-    >
+    <TouchableOpacity style={styles.container} onPress={selectTrack}>
       <Image
         source={{ uri: item.image }}
         style={styles.image}
