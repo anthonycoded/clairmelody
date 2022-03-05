@@ -27,6 +27,7 @@ const Login = ({ navigation }) => {
   const enableBioAuth = profile?.enableBioAuth || false;
 
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [error, setError] = useState(undefined);
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
   const [isEnabled, setIsEnabled] = useState(profile?.rememberUserId || false);
   const [showLogin, setShowLogin] = useState(true);
@@ -75,8 +76,8 @@ const Login = ({ navigation }) => {
       //dispatch(SetUserID(user.email));
       //dispatch(GetNameAndProfilePic());
       async function loadData() {
-        await dispatch(GetBeats());
-        await dispatch(GetSongs());
+        //dispatch(GetBeats());
+        //dispatch(GetSongs());
         await navigation.navigate("Drawer"); //Navigate to home screen
         setLoading(false); //Remove Loading Spinner
       }
@@ -98,8 +99,9 @@ const Login = ({ navigation }) => {
       //   }
 
       //Auth Failed
-    } else if (auth?.success === false && auth?.error) {
+    } else if (auth?.success == false && auth?.error) {
       setLoading(false); //Remove Loading Spinner
+      setError(auth.error); //set error message to be displayed in modal
       setShowErrorModal(true); //Show Error Modal
       //Reset Username
       //   setUser({
@@ -161,7 +163,6 @@ const Login = ({ navigation }) => {
   const closeErrorModal = () => {
     setShowErrorModal(false);
   };
-  console.log(user);
 
   useEffect(() => {
     // if (!rememberUserId) {
@@ -306,7 +307,7 @@ const Login = ({ navigation }) => {
         <ErrorModal
           showErrorModal={showErrorModal}
           closeErrorModal={closeErrorModal}
-          //error={auth.error}
+          error={error}
         ></ErrorModal>
       </ScrollView>
     </KeyboardAvoidingView>
