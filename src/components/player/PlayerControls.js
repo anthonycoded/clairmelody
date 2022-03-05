@@ -36,10 +36,12 @@ const PlayerControls = ({ expanded }) => {
     volume: 1.0,
     isBuffering: undefined,
     error: undefined,
-    url: currentTrack?.url,
+    url: undefined,
     duration: 0,
     currentPosition: 0,
   });
+
+  const [autoPlay, setAutoPlay] = useState(false);
 
   console.log(state);
 
@@ -92,7 +94,7 @@ const PlayerControls = ({ expanded }) => {
         };
 
         let status = {
-          shouldPlay: false,
+          shouldPlay: autoPlay,
           volume: volume,
         };
 
@@ -101,12 +103,6 @@ const PlayerControls = ({ expanded }) => {
           status,
           false
         );
-
-        // setState({
-        //   ...state,
-        //   isLoaded: data.isLoaded,
-        //   isPlaying: data.isPlaying,
-        // });
       } catch (e) {
         console.log(e);
       }
@@ -118,7 +114,7 @@ const PlayerControls = ({ expanded }) => {
       try {
         currentStatus.isPlaying
           ? await playbackInstance.current.pauseAsync()
-          : await playbackInstance.current.playAsync();
+          : (await playbackInstance.current.playAsync(), setAutoPlay(true));
       } catch (error) {
         console.log(error);
       }
@@ -167,9 +163,7 @@ const PlayerControls = ({ expanded }) => {
           await loadAudio();
         }
       }
-      // if (currentTrack?.url) {
-      //   await loadAudio();
-      // }
+
       await statusUpdate();
       if (playbackInstance.current._loaded && state.url != currentTrack?.url) {
         await reload();
