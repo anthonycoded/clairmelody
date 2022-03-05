@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Asset } from "expo-asset";
 import AppNavigation from "./src/navigation/AppNavigation";
 import { theme } from "./src/config/Theme";
+import { GetSongs } from "./src/store/actions/songActions";
+import { GetBeats } from "./src/store/actions/beatActions";
 
 const AppWrapper = () => {
   const [ready, setReady] = useState(false);
@@ -20,6 +22,11 @@ const AppWrapper = () => {
     });
     return Promise.all(cacheImages);
   }
+
+  useEffect(() => {
+    dispatch(GetSongs());
+    dispatch(GetBeats());
+  }, []);
 
   function LogoTitle() {
     return (
