@@ -10,23 +10,27 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
-import { SelectTrack } from "../store/actions/PlayerActions";
+import { SelectTrack, SetPlayList } from "../store/actions/PlayerActions";
 import Button from "../components/Button";
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 const SongScreen = () => {
-  const beats = useSelector((state) => state.songs).sort(
+  const songs = useSelector((state) => state.songs).sort(
     (a, b) => a._id - b._id
   );
   const dispatch = useDispatch();
 
-  const selectTrack = (id) => {
-    dispatch(SelectTrack(id));
+  const selectTrack = (item) => {
+    dispatch(SelectTrack(item));
   };
 
+  function Playlist() {
+    dispatch(SetPlayList(songs));
+  }
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item._id)}>
+    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item)}>
       <Image source={{ uri: item.image }} style={styles.image}></Image>
       <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
@@ -52,7 +56,7 @@ const SongScreen = () => {
             paddingHorizontal: config.wp("6%"),
           }}
         >
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={Playlist}>
             <Text style={styles.buttonText}>Play</Text>
             <Entypo name="controller-play" size={24} color="white" />
           </TouchableOpacity>
@@ -63,7 +67,7 @@ const SongScreen = () => {
         </View>
 
         <FlatList
-          data={beats}
+          data={songs}
           renderItem={renderItem}
           keyExtractor={(item) => item._id.toString()}
           contentContainerStyle={{

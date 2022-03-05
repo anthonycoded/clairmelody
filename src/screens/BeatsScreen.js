@@ -21,12 +21,12 @@ const BeatsScreen = () => {
   );
   const dispatch = useDispatch();
 
-  const selectTrack = (id) => {
-    dispatch(SelectTrack(id));
+  const selectTrack = (item) => {
+    dispatch(SelectTrack(item));
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item._id)}>
+    <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item)}>
       <Image source={{ uri: item.image }} style={styles.image}></Image>
       <Text style={styles.title}>{item.title}</Text>
     </TouchableOpacity>
