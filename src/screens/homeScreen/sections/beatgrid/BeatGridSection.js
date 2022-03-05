@@ -21,6 +21,7 @@ const BeatGrid = () => {
         contentContainerStyle={{
           justifyContent: "center",
           alignItems: "center",
+          marginBottom: 15,
         }}
       />
       <FlatList

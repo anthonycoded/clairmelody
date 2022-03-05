@@ -15,17 +15,20 @@ const BeatCard = ({ item }) => {
       <Image
         source={{ uri: item.image }}
         style={styles.image}
-        resizeMode="center"
+        resizeMode="cover"
+        resizeMethod="scale"
       ></Image>
-      <Text>{item.title}</Text>
+      <Text style={{ textTransform: "capitalize", marginTop: 5, fontSize: 16 }}>
+        {item.title}
+      </Text>
     </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    height: config.hp("12%"),
-    width: config.wp("40%"),
-    backgroundColor: "red",
+    height: config.hp("13%"),
+    width: config.wp("42%"),
+
     marginBottom: 25,
     marginRight: 10,
     elevation: config.hp("1%"),
