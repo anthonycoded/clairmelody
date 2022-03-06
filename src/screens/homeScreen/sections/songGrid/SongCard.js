@@ -15,13 +15,23 @@ const BeatCard = ({ item }) => {
       style={styles.container}
       onPress={() => selectTrack(item._id)}
     >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.image}
-        resizeMode="cover"
-        resizeMethod="scale"
-      ></Image>
-      <Text style={{ textTransform: "capitalize" }}>{item.title}</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: item.image }}
+          style={styles.image}
+          resizeMode="cover"
+          resizeMethod="scale"
+        ></Image>
+      </View>
+      <Text
+        style={{
+          textTransform: "capitalize",
+          fontSize: 22,
+          fontWeight: "400",
+        }}
+      >
+        {item.title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -31,17 +41,21 @@ const styles = StyleSheet.create({
     width: config.wp("70%"),
     marginBottom: 25,
     marginRight: 10,
-    elevation: config.hp("1%"),
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowColor: "black",
+
     borderRadius: 4,
   },
   image: {
     height: "100%",
     width: "100%",
     borderRadius: 4,
+  },
+  imageContainer: {
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    shadowColor: "black",
+    elevation: config.hp("1%"),
+    marginBottom: config.hp("1%"),
   },
 });
 
