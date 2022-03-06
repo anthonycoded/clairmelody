@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <CardContainer></CardContainer>
-      <TrendingSongs></TrendingSongs>
+
       <SongGridSection></SongGridSection>
       <BeatGridSection></BeatGridSection>
       <View style={{ paddingBottom: config.hp("16%") }}></View>
