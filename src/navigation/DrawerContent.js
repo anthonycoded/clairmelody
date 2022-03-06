@@ -108,7 +108,7 @@ const DrawerContent = ({ navigation }) => {
               labelStyle={styles.labelStyle}
               label="Songs"
               onPress={() => {
-                navigation.navigate("Accounts");
+                navigation.navigate("SongsScreen");
               }}
             />
             <DrawerItem
@@ -116,7 +116,7 @@ const DrawerContent = ({ navigation }) => {
               labelStyle={styles.labelStyle}
               label="Beats"
               onPress={() => {
-                navigation.navigate("depositTab");
+                navigation.navigate("Beats");
               }}
             />
 
