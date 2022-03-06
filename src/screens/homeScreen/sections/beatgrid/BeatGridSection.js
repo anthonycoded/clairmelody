@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import LottieView from "lottie-react-native";
 import { useSelector } from "react-redux";
 import BeatCard from "./BeatCard";
 import { theme } from "../../../../config/Theme";
@@ -12,7 +13,24 @@ const BeatGrid = () => {
   const renderItem = ({ item }) => <BeatCard item={item}></BeatCard>;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Trending Beats</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Text style={styles.title}>Trending Beats</Text>
+        <LottieView
+          loop
+          autoPlay
+          style={{
+            width: 80,
+            height: 80,
+          }}
+          source={require("../../../../../assets/lottieFiles/rocket.json")}
+        />
+      </View>
       <FlatList
         data={beats}
         renderItem={renderItem}

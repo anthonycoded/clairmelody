@@ -1,17 +1,35 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import LottieView from "lottie-react-native";
 import { useSelector } from "react-redux";
 import SongCard from "./SongCard";
 import { theme } from "../../../../config/Theme";
 import { config } from "../../../../config/Config";
 
 const SongGrid = () => {
-  const songs = useSelector((state) => state.songs);
+  const songs = useSelector((state) => state.songs).slice(0, 4);
 
   const renderItem = ({ item }) => <SongCard item={item}></SongCard>;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Trending Songs</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Text style={styles.title}>Trending Songs</Text>
+        <LottieView
+          loop
+          autoPlay
+          style={{
+            width: 80,
+            height: 80,
+          }}
+          source={require("../../../../../assets/lottieFiles/rocket.json")}
+        />
+      </View>
 
       <FlatList
         data={songs}
@@ -28,7 +46,7 @@ const SongGrid = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    paddingTop: config.hp("4%"),
+    paddingTop: config.hp("1%"),
   },
   title: {
     fontSize: 32,
