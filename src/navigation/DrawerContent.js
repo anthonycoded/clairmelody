@@ -123,9 +123,9 @@ const DrawerContent = ({ navigation }) => {
             <DrawerItem
               style={styles.drawerItem}
               labelStyle={styles.labelStyle}
-              label="Explore"
+              label="Store"
               onPress={() => {
-                navigation.navigate("E-statements");
+                navigation.navigate("Store");
               }}
             />
           </View>
