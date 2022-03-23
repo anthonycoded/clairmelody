@@ -14,12 +14,13 @@ import { SelectTrack, SetPlayList } from "../store/actions/PlayerActions";
 import Button from "../components/Button";
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
+import { Shuffle } from "../components/player/functions/Shuffle";
 
 const SongScreen = () => {
   const songs = useSelector((state) => state.songs).sort(
     (a, b) => a._id - b._id
   );
-  const [list, setList] = useState(songs ? songs : undefined);
+  const player = useSelector((state) => state.player);
   let playlist = songs;
   const dispatch = useDispatch();
 
@@ -30,29 +31,6 @@ const SongScreen = () => {
   function Playlist() {
     dispatch(SetPlayList(songs));
   }
-
-  function shuffle() {
-    let currentIndex = playlist.length,
-      randomIndex;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [playlist[currentIndex], playlist[randomIndex]] = [
-        playlist[randomIndex],
-        playlist[currentIndex],
-      ];
-    }
-
-    //console.log(playlist);
-    dispatch(SetPlayList(playlist));
-  }
-
-  //console.log(list);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.beat} onPress={() => selectTrack(item)}>
@@ -109,7 +87,10 @@ const SongScreen = () => {
             <Text style={styles.buttonText}>Play</Text>
             <Entypo name="controller-play" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={shuffle}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => Shuffle(playlist, dispatch, player.recentlyPlayed)}
+          >
             <Text style={styles.buttonText}>Shuffle</Text>
             <Entypo name="shuffle" size={24} color="white" />
           </TouchableOpacity>
