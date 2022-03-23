@@ -2,6 +2,7 @@ import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import BottomTabNavigator from "./BottomTabNavigator";
 import DrawerContent from "./DrawerContent";
+import StoreNavigator from "./StoreNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -11,6 +12,11 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Shopper"
         component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      ></Drawer.Screen>
+      <Drawer.Screen
+        name="Store"
+        component={StoreNavigator}
         options={{ headerShown: false }}
       ></Drawer.Screen>
     </Drawer.Navigator>
