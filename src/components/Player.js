@@ -15,7 +15,7 @@ import { Audio } from "expo-av";
 import { useSelector, useDispatch } from "react-redux";
 import { UpdateState } from "../store/actions/PlayerActions";
 import { theme } from "../config/Theme";
-import { formatMilliseconds } from "../../utils";
+import { formatMilliseconds } from "../utils/utils";
 import PlayerControls from "./player/PlayerControls";
 
 //import ImageWrapper from "./player/ImageWrapper";
