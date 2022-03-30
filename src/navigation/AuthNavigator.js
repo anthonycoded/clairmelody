@@ -22,7 +22,9 @@ const AuthNavigator = () => {
           name="Login"
           component={LandingScreen}
           options={{
-            headerShown: false,
+            headerTitle: (props) => <Header {...props} />,
+            headerTitleAlign: "center",
+            headerShown: true,
             headerBackVisible: false,
           }}
         ></Stack.Screen>
