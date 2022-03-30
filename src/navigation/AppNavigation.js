@@ -18,9 +18,7 @@ const AppNavigation = () => {
             headerStyle: {
               backgroundColor: "white",
             },
-            headerShown: true,
-            headerTitle: (props) => <Header {...props} />,
-            headerTitleAlign: "center",
+            headerShown: false,
           }}
         >
           <Stack.Screen
