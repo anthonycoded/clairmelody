@@ -14,11 +14,7 @@ const DrawerNavigator = () => {
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       ></Drawer.Screen>
-      <Drawer.Screen
-        name="Store"
-        component={StoreNavigator}
-        options={{ headerShown: false }}
-      ></Drawer.Screen>
+      <Drawer.Screen name="Store" component={StoreNavigator}></Drawer.Screen>
     </Drawer.Navigator>
   );
 };

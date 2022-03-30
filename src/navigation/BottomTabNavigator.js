@@ -1,15 +1,19 @@
 import React from "react";
 import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import {
+  Ionicons,
+  FontAwesome5,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 import HomeNavigator from "./MainNavigator";
+import StoreNavigator from "./StoreNavigator";
 import SongScreen from "../screens/SongScreen";
+import Header from "../components/Header";
 import BeatScreen from "../screens/BeatsScreen";
 import Player from "../components/Player";
 
@@ -43,6 +47,10 @@ const BottomTabNavigator = () => {
           name="homeTab"
           component={HomeNavigator}
           options={{
+            headerTitle: (props) => <Header {...props} />,
+            headerTitleAlign: "center",
+            headerShown: true,
+            headerBackVisible: false,
             tabBarLabel: ({ focused, color }) => (
               <Text
                 style={{
@@ -83,6 +91,31 @@ const BottomTabNavigator = () => {
             tabBarIcon: ({ focused }) => (
               <FontAwesome5
                 name="headphones"
+                size={24}
+                color={focused ? theme.colors.primary : theme.colors.inActive}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Store"
+          component={StoreNavigator}
+          options={{
+            headerShown: false,
+            tabBarLabel: ({ focused, color }) => (
+              <Text
+                style={{
+                  color: focused ? theme.colors.primary : theme.colors.inActive,
+                  fontSize: 14,
+                }}
+              >
+                Shop
+              </Text>
+            ),
+            tabBarColor: theme.colors.primary,
+            tabBarIcon: ({ focused }) => (
+              <MaterialIcons
+                name="store"
                 size={24}
                 color={focused ? theme.colors.primary : theme.colors.inActive}
               />
