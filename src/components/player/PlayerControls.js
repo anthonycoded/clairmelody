@@ -16,7 +16,9 @@ import { useSelector, useDispatch } from "react-redux";
 import LottieView from "lottie-react-native";
 
 import { theme } from "../../config/Theme";
-import { formatMilliseconds } from "../../../utils";
+import { formatMilliseconds } from "../../utils/utils";
+import { RecentlyPlayed, SelectTrack } from "../../store/actions/PlayerActions";
+import { AddToRecentlyPlayed } from "./functions/Shuffle";
 
 const PlayerControls = ({ expanded }) => {
   const playbackInstance = useRef(new Audio.Sound());
@@ -39,11 +41,12 @@ const PlayerControls = ({ expanded }) => {
     url: undefined,
     duration: 0,
     currentPosition: 0,
+    currentIndex: 0,
   });
 
   const [autoPlay, setAutoPlay] = useState(false);
 
-  console.log(state);
+  //console.log(state);
 
   let progress = state.currentPosition / state.duration;
   let duration = formatMilliseconds(state.duration ? state.duration : 0);
@@ -103,6 +106,13 @@ const PlayerControls = ({ expanded }) => {
           status,
           false
         );
+        if (autoPlay) {
+          AddToRecentlyPlayed(
+            currentTrack.url,
+            dispatch,
+            player.recentlyPlayed
+          );
+        }
       } catch (e) {
         console.log(e);
       }
@@ -110,11 +120,17 @@ const PlayerControls = ({ expanded }) => {
   }
   const handlePlayPause = async () => {
     let currentStatus = await playbackInstance.current.getStatusAsync();
+
+    async function play() {
+      await playbackInstance.current.playAsync(),
+        setAutoPlay(true),
+        AddToRecentlyPlayed(currentStatus.uri, dispatch, player.recentlyPlayed);
+    }
     if (currentStatus.isLoaded == true && !currentStatus.isBuffering) {
       try {
         currentStatus.isPlaying
           ? await playbackInstance.current.pauseAsync()
-          : (await playbackInstance.current.playAsync(), setAutoPlay(true));
+          : await play();
       } catch (error) {
         console.log(error);
       }
@@ -136,7 +152,7 @@ const PlayerControls = ({ expanded }) => {
 
   async function statusUpdate() {
     playbackInstance.current._onPlaybackStatusUpdate = (status) => {
-      //console.log(status);
+      console.log(status);
 
       setState({
         ...state,
@@ -149,6 +165,20 @@ const PlayerControls = ({ expanded }) => {
         duration: status.durationMillis,
         currentPosition: status.positionMillis,
       });
+
+      // //////////////////WHEN SONG ENDS////////////////////////////
+      // if (status.didJustFinish) {
+      //   playbackInstance.current.unloadAsync(); //UNLOAD AUDIO
+      //   if (state.currentIndex < player.playlist?.length) {
+      //     //
+      //     setState({
+      //       ...state,
+      //       isLoading: true,
+      //       currentIndex: state.currentIndex + 1,
+      //     });
+      //     dispatch(SelectTrack(player.playlist[state.currentIndex]));
+      //   }
+      // }
     };
   }
   async function StatusUpdate() {
