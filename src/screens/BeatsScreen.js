@@ -11,6 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
 import { SelectTrack } from "../store/actions/PlayerActions";
+import Shuffle from "../components/player/functions/Shuffle";
 import Button from "../components/Button";
 import { config } from "../config/Config";
 import { theme } from "../config/Theme";
@@ -56,7 +57,10 @@ const BeatsScreen = () => {
             <Text style={styles.buttonText}>Play</Text>
             <Entypo name="controller-play" size={24} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => Shuffle(beats)}
+          >
             <Text style={styles.buttonText}>Shuffle</Text>
             <Entypo name="shuffle" size={24} color="white" />
           </TouchableOpacity>
