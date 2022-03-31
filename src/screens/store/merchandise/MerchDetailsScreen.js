@@ -6,15 +6,18 @@ import {
   Dimensions,
   StyleSheet,
   Animated,
+  TouchableOpacity,
   Text,
 } from "react-native";
 import React from "react";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { theme } from "../../../config/Theme";
+import { config } from "../../../config/Config";
 
 const { width, height } = Dimensions.get("screen");
 
 const ITEM_WIDTH = width;
-const ITEM_HEIGHT = height * 0.75;
+const ITEM_HEIGHT = height * 0.73;
 const images = [
   "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_1_1_1.jpg?ts=1606727905128",
   "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_2_1_1.jpg?ts=1606727908993",
@@ -87,7 +90,7 @@ const MerchDetailsScreen = () => {
       </View>
       <BottomSheet
         initialSnapIndex={0}
-        snapPoints={[height - ITEM_HEIGHT, height - height / 3]}
+        snapPoints={[height / 3, height - height / 3]}
       >
         <BottomSheetScrollView
           style={{ backgroundColor: "white" }}
@@ -113,6 +116,25 @@ const MerchDetailsScreen = () => {
                 </Text>
               );
             })}
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: theme.colors.primary,
+                borderRadius: 24,
+                paddingHorizontal: 25,
+                paddingVertical: 10,
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>Add To Cart</Text>
+            </TouchableOpacity>
           </View>
         </BottomSheetScrollView>
       </BottomSheet>
