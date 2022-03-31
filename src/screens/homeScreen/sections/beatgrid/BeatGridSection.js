@@ -23,7 +23,6 @@ const BeatGrid = () => {
         <Text style={styles.title}>Trending Beats</Text>
         <LottieView
           loop
-          autoPlay
           style={{
             width: 80,
             height: 80,
