@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 
 const NewArrivals = ({ navigation }) => {
-  const Hoodies = useSelector((state) => state.products.hoodies);
+  const Hoodies = useSelector((state) => state.products.products);
 
   const renderItem = ({ item }) => {
     return <ProductCard item={item} navigation={navigation} />;
