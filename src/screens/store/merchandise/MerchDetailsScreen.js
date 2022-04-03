@@ -9,44 +9,46 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { theme } from "../../../config/Theme";
 import { config } from "../../../config/Config";
+import { AddToCart } from "../../../store/actions/cartActions";
 
 const { width, height } = Dimensions.get("screen");
-
 const ITEM_WIDTH = width;
 const ITEM_HEIGHT = height * 0.73;
-const images = [
-  "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_1_1_1.jpg?ts=1606727905128",
-  "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_2_1_1.jpg?ts=1606727908993",
-  "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_2_2_1.jpg?ts=1606727889015",
-  "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_2_3_1.jpg?ts=1606727896369",
-  "https://static.zara.net/photos///2020/I/1/1/p/6543/610/091/2/w/2460/6543610091_2_4_1.jpg?ts=1606727898445",
-];
-
-const product = {
-  title: "SOFT MINI CROSSBODY BAG WITH KISS LOCK",
-  description: [
-    "Mini crossbody bag available in various colours. Featuring two compartments. Handles and detachable crossbody shoulder strap. Lined interior. Clasp with two metal pieces.",
-    'Height x Length x Width: 14 x 21.5 x 4.5 cm. / 5.5 x 8.4 x 1.7"',
-  ],
-  price: "29.99£",
-};
-
 const DOT_SIZE = 8;
 const DOT_SPACING = 8;
 const DOT_INDICATOR_SIZE = DOT_SIZE + DOT_SPACING;
 
 const MerchDetailsScreen = () => {
+  const products = useSelector((state) => state.products);
+  const cart = useSelector((state) => state.cart);
+  let item = cart.cart.filter(
+    (item) => item._id == products.selectedProduct._id
+  );
+  const selectedProduct = { ...products.selectedProduct, ...item };
   const scrollY = React.useRef(new Animated.Value(0)).current;
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  function addToCart() {
+    setLoading(true);
+    dispatch(AddToCart(selectedProduct));
+  }
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
   return (
     <View style={{ height: "100%" }}>
       <StatusBar hidden />
       <View style={{ height: ITEM_HEIGHT, overflow: "hidden" }}>
         <Animated.FlatList
-          data={images}
+          data={selectedProduct?.images}
           keyExtractor={(_, index) => index.toString()}
           snapToInterval={ITEM_HEIGHT}
           decelerationRate="fast"
@@ -65,7 +67,7 @@ const MerchDetailsScreen = () => {
           }}
         />
         <View style={styles.pagination}>
-          {images.map((_, index) => {
+          {selectedProduct?.images?.map((_, index) => {
             return <View key={index} style={[styles.dot]} />;
           })}
           <Animated.View
@@ -103,13 +105,13 @@ const MerchDetailsScreen = () => {
               textTransform: "uppercase",
             }}
           >
-            {product.title}
+            {selectedProduct?.title}
           </Text>
           <Text style={{ fontSize: 16, marginVertical: 20 }}>
-            {product.price}
+            {selectedProduct?.price}
           </Text>
           <View style={{ marginVertical: 20 }}>
-            {product.description.map((text, index) => {
+            {selectedProduct?.description?.map((text, index) => {
               return (
                 <Text key={index} style={{ marginBottom: 10, lineHeight: 22 }}>
                   {text}
@@ -126,6 +128,7 @@ const MerchDetailsScreen = () => {
             }}
           >
             <TouchableOpacity
+              onPress={() => addToCart(selectedProduct)}
               style={{
                 backgroundColor: theme.colors.primary,
                 borderRadius: 24,
