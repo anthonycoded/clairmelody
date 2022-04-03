@@ -2,14 +2,18 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { config } from "../../../../config/Config";
-import { SelectTrack } from "../../../../store/actions/PlayerActions";
+import { SelectProduct } from "../../../../store/actions/productActions";
 
 const BeatCard = ({ item, navigation }) => {
+  const dispatch = useDispatch();
+
+  function select() {
+    dispatch(SelectProduct(item));
+    navigation.navigate("MusicDetails");
+  }
+
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigation.navigate("MusicDetails")}
-    >
+    <TouchableOpacity style={styles.container} onPress={select}>
       <Image
         source={{ uri: item.image }}
         style={styles.image}
