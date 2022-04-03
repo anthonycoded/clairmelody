@@ -7,6 +7,7 @@ import CollectionScreen from "../screens/store/Collections/CollectionScreen";
 import MerchDetailsScreen from "../screens/store/merchandise/MerchDetailsScreen";
 import MusicDetailScreen from "../screens/store/sections/musicDetails/MusicDetailScreen";
 import GoBack from "../components/GoBack";
+import CartButton from "../components/CartButton";
 import CartScreen from "../screens/store/cart/CartScreen";
 
 const Stack = createNativeStackNavigator();
@@ -44,6 +45,9 @@ const StoreNavigator = () => {
           headerBackVisible: false,
           headerLeft: () => {
             return <GoBack navigation={navigation} />;
+          },
+          headerRight: () => {
+            return <CartButton navigation={navigation} />;
           },
         })}
       ></Stack.Screen>
