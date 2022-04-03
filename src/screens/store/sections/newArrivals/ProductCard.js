@@ -4,22 +4,30 @@ import { useSelector, useDispatch } from "react-redux";
 import { config } from "../../../../config/Config";
 import { Ionicons } from "@expo/vector-icons";
 import { AddToCart } from "../../../../store/actions/cartActions";
+import { SelectProduct } from "../../../../store/actions/productActions";
 import { theme } from "../../../../config/Theme";
 
 const ProductCard = ({ item, navigation }) => {
   const cart = useSelector((state) => state.cart);
+  const images = item.images ? item.images : undefined;
   const dispatch = useDispatch();
+
   function addToCart(id) {
     dispatch(AddToCart(id));
   }
+
+  function selectProduct() {
+    navigation.navigate("ProductDetails");
+    dispatch(SelectProduct(item));
+  }
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ProductDetails")}
       style={styles.container}
+      onPress={() => selectProduct(item._id)}
     >
       <Image
         resizeMode="cover"
-        source={item.images}
+        source={{ uri: images[0] }}
         style={{
           width: "100%",
           height: 200,
@@ -52,7 +60,7 @@ const ProductCard = ({ item, navigation }) => {
         </View>
         <View style={{ flexDirection: "row" }}>
           <Ionicons
-            onPress={() => addToCart(item._id)}
+            onPress={() => selectProduct(item._id)}
             name="cart"
             size={28}
             color={theme.colors.primary}
