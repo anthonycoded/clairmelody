@@ -9,12 +9,20 @@ import MusicDetailScreen from "../screens/store/sections/musicDetails/MusicDetai
 import GoBack from "../components/GoBack";
 import CartButton from "../components/CartButton";
 import CartScreen from "../screens/store/cart/CartScreen";
+import CheckoutScreen from "../screens/store/checkout/CheckoutScreen";
+import CheckoutSuccess from "../screens/store/checkout/CheckoutSuccess";
 
 const Stack = createNativeStackNavigator();
 
 const StoreNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerRight: () => {
+          return <CartButton navigation={navigation} />;
+        },
+      })}
+    >
       <Stack.Screen
         name="index"
         component={StoreScreen}
@@ -46,9 +54,6 @@ const StoreNavigator = () => {
           headerLeft: () => {
             return <GoBack navigation={navigation} />;
           },
-          headerRight: () => {
-            return <CartButton navigation={navigation} />;
-          },
         })}
       ></Stack.Screen>
       <Stack.Screen
@@ -75,6 +80,30 @@ const StoreNavigator = () => {
           headerLeft: () => {
             return <GoBack navigation={navigation} />;
           },
+        })}
+      ></Stack.Screen>
+
+      <Stack.Screen
+        name="Checkout"
+        component={CheckoutScreen}
+        options={({ navigation }) => ({
+          headerTitle: (props) => <Header {...props} />,
+          headerTitleAlign: "center",
+          headerShown: true,
+          headerBackVisible: false,
+          headerLeft: () => {
+            return <GoBack navigation={navigation} />;
+          },
+        })}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="CheckoutSuccess"
+        component={CheckoutSuccess}
+        options={({ navigation }) => ({
+          headerTitle: (props) => <Header {...props} />,
+          headerTitleAlign: "center",
+          headerShown: true,
+          headerBackVisible: false,
         })}
       ></Stack.Screen>
     </Stack.Navigator>
