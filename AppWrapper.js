@@ -8,6 +8,7 @@ import AppNavigation from "./src/navigation/AppNavigation";
 import { theme } from "./src/config/Theme";
 import { GetSongs } from "./src/store/actions/songActions";
 import { GetBeats } from "./src/store/actions/beatActions";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const AppWrapper = () => {
   const [ready, setReady] = useState(false);
@@ -54,7 +55,11 @@ const AppWrapper = () => {
       />
     );
   }
-  return <AppNavigation />;
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppNavigation />
+    </GestureHandlerRootView>
+  );
 };
 
 export default AppWrapper;
