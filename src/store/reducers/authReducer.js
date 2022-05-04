@@ -17,7 +17,7 @@ const initialState = {
   usernameSuccess: false,
   questionsSuccess: false,
 };
-console.log(initialState);
+
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     ///LOGIN ATTEMPT

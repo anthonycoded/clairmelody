@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "react-native-template",
-    "slug": "react-native-template",
-    "version": "1.0.0",
+    "name": "Jays World",
+    "slug": "JaysWorld-App",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -15,13 +15,20 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.jays-world.jaysworld",
+      "buildNumber": "1.0.0",
+      "supportsTablet": false,
+
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.jaysworld.jaysworld",
+      "versionCode": 1,
+      "publishManifestPath": "com.jays-world.jaysworld/manifest"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -11,10 +11,10 @@ import { config } from "../config/Config";
 import { theme } from "../config/Theme";
 
 import HomeNavigator from "./MainNavigator";
-import StoreNavigator from "./StoreNavigator";
+//import StoreNavigator from "./StoreNavigator";
 import SongScreen from "../screens/SongScreen";
 import Header from "../components/Header";
-import BeatScreen from "../screens/BeatsScreen";
+//import BeatScreen from "../screens/BeatsScreen";
 import Player from "../components/Player";
 
 const Tab = createBottomTabNavigator();
@@ -97,7 +97,7 @@ const BottomTabNavigator = () => {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Store"
           component={StoreNavigator}
           options={{
@@ -146,7 +146,7 @@ const BottomTabNavigator = () => {
               />
             ),
           }}
-        />
+        /> */}
 
         <Tab.Screen
           name="blank"

@@ -3,11 +3,11 @@ import React from "react";
 import LottieView from "lottie-react-native";
 import { theme } from "../../../config/Theme";
 import { config } from "../../../config/Config";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 
 const CheckoutSuccess = ({ navigation }) => {
   return (
     <View style={{ height: "100%" }}>
-      <Text>Payment Success</Text>
       <View
         style={{
           alignItems: "center",
@@ -37,24 +37,69 @@ const CheckoutSuccess = ({ navigation }) => {
         Payment Success
       </Text>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          paddingHorizontal: config.wp("4%"),
+          flex: 1,
+          alignItems: "center",
+          paddingBottom: config.hp("20%"),
+        }}
+      >
         <TouchableOpacity
           style={{
-            width: config.wp("40%"),
+            width: config.wp("80%"),
             backgroundColor: theme.colors.primary,
+            borderRadius: 24,
+            paddingHorizontal: config.wp("6%"),
+            paddingVertical: 5,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: config.hp("5%"),
+            marginBottom: 20,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>Download</Text>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 20,
+              marginRight: 5,
+            }}
+          >
+            Download
+          </Text>
+          <Feather name="download" size={22} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            width: config.wp("40%"),
+            width: config.wp("80%"),
             backgroundColor: theme.colors.primary,
+            borderRadius: 24,
+            paddingHorizontal: config.wp("6%"),
+            paddingVertical: 5,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: config.hp("5%"),
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>Email Link</Text>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 20,
+              marginRight: 5,
+            }}
+          >
+            Email Link
+          </Text>
+          <FontAwesome5 name="share" size={22} color="white" />
         </TouchableOpacity>
       </View>
+      <Text>Return to home</Text>
     </View>
   );
 };

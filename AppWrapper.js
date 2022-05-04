@@ -16,17 +16,20 @@ const AppWrapper = () => {
   const dispatch = useDispatch();
 
   async function loadCacheAssets() {
-    const images = [require("./assets/banner.jpg")];
-
-    const cacheImages = images.map((image) => {
-      return Asset.fromModule(image).downloadAsync();
-    });
-    return Promise.all(cacheImages);
+    try {
+      const images = [require("./assets/banner.jpg")];
+      const cacheImages = images.map((image) => {
+        return Asset.fromModule(image).downloadAsync();
+      });
+      dispatch(GetSongs());
+      return Promise.all(cacheImages);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
-    dispatch(GetSongs());
-    dispatch(GetBeats());
+    // dispatch(GetBeats());
   }, []);
 
   function LogoTitle() {

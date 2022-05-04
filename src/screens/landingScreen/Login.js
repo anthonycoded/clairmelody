@@ -58,27 +58,31 @@ const Login = ({ navigation }) => {
 
   //Submit Login to backend
   const handleSubmit = () => {
-    setUsername(user.email);
-    setLoading(true);
-    dispatch(userLoginMain(user));
-    // if (isEnabled) {
-    //   dispatch(
-    //     ToggleRememberUserId({
-    //       remember: true,
-    //       email: user.email,
-    //     })
-    //   );
-    // }
+    try {
+      setUsername(user.email);
+      setLoading(true);
+      dispatch(userLoginMain(user));
+      // if (isEnabled) {
+      //   dispatch(
+      //     ToggleRememberUserId({
+      //       remember: true,
+      //       email: user.email,
+      //     })
+      //   );
+      // }
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     //Auth Successful
     if (auth?.success) {
       //dispatch(SetUserID(user.email));
       //dispatch(GetNameAndProfilePic());
-      async function loadData() {
+      function loadData() {
         //dispatch(GetBeats());
         //dispatch(GetSongs());
-        await navigation.navigate("Drawer"); //Navigate to home screen
+        navigation.navigate("Drawer"); //Navigate to home screen
         setLoading(false); //Remove Loading Spinner
       }
 
